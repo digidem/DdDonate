@@ -2,8 +2,24 @@
 <html>
   <head>
     <title>Dd Donations</title>
-    <script src="https://checkout.stripe.com/v2/checkout.js"></script>
+    <script src="https://js.stripe.com/v1/"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.js"></script>
+    <script src="lib/jquery.payment.js"></script>
+    <style type="text/css" media="screen">
+      input.invalid {
+        border: 2px solid red;
+      }
+
+      .validation.failed:after {
+        color: red;
+        content: 'Validation failed';
+      }
+
+      .validation.passed:after {
+        color: green;
+        content: 'Validation passed';
+      }
+    </style>
 </head>
 <body>
   <%= yield %>

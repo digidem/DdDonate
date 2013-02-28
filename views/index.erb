@@ -3,36 +3,117 @@
   <div id="content">
     <h1>Digital Democracy</h1>
     <p>Make a donation</p>
+    <form novalidate autocomplete="on" id="donate-form">
     
-    <button id="donate-button">Donate $5</button>
+        <div class="payment"><article>
+          <div class="message"></div>
+
+          <div class="number">
+            <label for="paymentNumber">Card number</label>
+            <input type="text" id="paymentNumber" placeholder="•••• •••• •••• ••••" data-placeholder="Card number" autocompletetype="cc-number" required="" data-numeric="">
+            <div class="placeholder"></div>
+            <div class="type"></div>
+          </div>
+
+          <div class="expiry">
+            <label for="paymentExpiry">Expires</label>
+            <input type="text" id="paymentExpiry" placeholder="MM / YY" autocompletetype="cc-exp" maxlength="9" pattern="\d*" data-numeric="" required="">
+          </div>
+
+          <div class="name">
+            <label for="paymentName">Name on card</label>
+            <input type="text" id="paymentName" data-placeholder="Name on card" autocompletetype="name" autocapitalize="words" autocorrect="off" spellcheck="off" required="">
+          </div>
+
+          <div class="cvc">
+            <label for="paymentCVC">Card code</label>
+            <input type="text" id="paymentCVC" placeholder="CVC" autocompletetype="cc-csc" maxlength="4" pattern="\d*" autocomplete="off" data-numeric="" required="">
+          </div>
+        </article>
+
+        <div class="preloaded-images"></div>
+    </div>    
+    
+    <ul id="amounts">
+        <li class="amount-cont first" id="amount-cont-1">
+            <input type="radio" class="radio" name="amount" value="15" tabindex="10" id="amount-15" checked="checked"> <label for="amount-15" class="active">$15</label>
+        </li>
+        <li class="amount-cont" id="amount-cont-2">
+            <input type="radio" class="radio" name="amount" value="35" tabindex="11" id="amount-35"> <label for="amount-35">$35</label>
+        </li>
+        <li class="amount-cont" id="amount-cont-3">
+            <input type="radio" class="radio" name="amount" value="50" tabindex="12" id="amount-50"> <label for="amount-50">$50</label>
+        </li>
+        <li class="amount-cont" id="amount-cont-4">
+            <input type="radio" class="radio" name="amount" value="100" tabindex="13" id="amount-100"> <label for="amount-100">$100</label>
+        </li>
+        <li class="amount-cont" id="amount-cont-5">
+            <input type="radio" class="radio" name="amount" value="250" tabindex="14" id="amount-250"> <label for="amount-250">$250</label>
+        </li>
+        <li class="amount-cont" id="amount-cont-6">
+            <input type="radio" class="radio" name="amount" value="500" tabindex="15" id="amount-500"> <label for="amount-500">$500</label>
+        </li>
+        <li class="amount-cont" id="amount-cont-7">
+            <input type="radio" class="radio" name="amount" value="1000" tabindex="16" id="amount-1000"> <label for="amount-1000">$1,000</label>
+        </li>
+    </ul>
+    <h2 class="validation"></h2>
+    <button id="donate-button">Donate</button>
+    </form>
     <div id="response"></div>
     
     <script>
-        $("#donate-button").click(function() {
+    jQuery(function($){
+      $('[data-numeric]').payment('restrictNumeric');
+      $('#paymentNumber').payment('formatCardNumber');
+      $('#paymentExpiry').payment('formatCardExpiry');
+      $('#paymentCVC').payment('formatCardCVC');
+    });
+    
+        $("#donate-button").click(function(e) {
+            e.preventDefault();
+            $('input').removeClass('invalid');
+            $('.validation').removeClass('passed failed');
+
+            var cardType = $.payment.cardType($('#paymentNumber').val());
+
+            $('#paymentNumber').toggleClass('invalid', !$.payment.validateCardNumber($('#paymentNumber').val()));
+            $('#paymentExpiry').toggleClass('invalid', !$.payment.validateCardExpiry($('#paymentExpiry').payment('cardExpiryVal')));
+            $('#paymentCVC').toggleClass('invalid', !$.payment.validateCardCVC($('#paymentCVC').val(), cardType));
+
+            if ( $('input.invalid').length ) {
+              $('.validation').addClass('failed');
+            } else {
+              $('.validation').addClass('passed');
+            }
+            
             $(this).attr("disabled", "disabled");
+            var amount = $('input:radio[name=amount]:checked').val()*100;
             var $response = $("#response").text("Getting card token from Stripe...");
             
-            var token = function(res){
+            var stripeResponseHandler = function(status, res){
+                console.log(res);
                 $response.text("Charging card...");
                 $.ajax({
                     url: '/donate',
                     crossDomain: true,
-                    data: {stripeToken: res.id},
+                    data: {stripeToken: res.id, amount: amount, email: "customer@example.com"},
                     dataType: 'jsonp'
                 }).done(function (data) {
                     $response.text("Thank you " + data.card.name + " we just charged $" + (data.amount / 100) + " to your card");
+                    $("#donate-button").removeAttr("disabled")
                 });
             };
-              
-            StripeCheckout.open({
-              key:         '<%= settings.publishable_key %>',
-              amount:      500,
-              name:        'Digital Democracy',
-              description: 'Donate $5.00',
-              image:       'img/dd-logo128x128.png', 
-              panelLabel:  'Donate',
-              token:       token
-            });
+            
+            Stripe.setPublishableKey('<%= settings.publishable_key %>');
+            
+            Stripe.createToken({
+                name: $('#paymentName').val(),
+                number: $('#paymentNumber').val(),
+                cvc: $('#paymentCVC').val(),
+                exp_month: $("#paymentExpiry").payment('cardExpiryVal').month,
+                exp_year: $("#paymentExpiry").payment('cardExpiryVal').year
+            }, stripeResponseHandler);
         
             return false;
         });
