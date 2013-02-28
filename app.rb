@@ -26,21 +26,16 @@ get '/' do
 end
 
 get '/donate' do
-  # Amount in cents
-  @amount = 500
-
   customer = Stripe::Customer.create(
-    :email => 'customer@example.com',
+    :email => params[:email],
     :card  => params[:stripeToken]
   )
-
   charge = Stripe::Charge.create(
-    :amount      => @amount,
-    :description => 'Sinatra Charge',
+    :amount      => params[:amount],
+    :description => 'Website donation',
     :currency    => 'usd',
     :customer    => customer.id
   )
-  
   json charge, :encoder => :to_json
 end
 
