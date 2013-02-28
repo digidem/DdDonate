@@ -1,0 +1,57 @@
+
+<!doctype html>
+<html>
+  <head>
+    <title>Dd Donations</title>
+    <script src="https://checkout.stripe.com/v2/checkout.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.js"></script>
+</head>
+<body>
+  <div id="content_wrapper">
+
+  <div id="content">
+    <h1>Digital Democracy</h1>
+    <p>Make a donation</p>
+    
+    <button id="donate-button">Donate $5</button>
+    <div id="response"></div>
+    
+    <script>
+        $("#donate-button").click(function() {
+            $(this).attr("disabled", "disabled");
+            var $response = $("#response");
+            
+            $response.text("Getting card token from Stripe...");
+            
+            var token = function(res){
+                console.log(res);
+                $response.text("Charging card...");
+                $.ajax({
+                    url: 'https://donate.aws.af.cm/donate',
+                    data: {stripeToken: res.id},
+                    dataType: 'jsonp'
+                }).done(function (data) {
+                    console.log(data)
+                    $response.text("Thank you " + data.card.name + " we just charged $" + (data.amount / 100) + " to your card");
+                });
+            };
+              
+            StripeCheckout.open({
+              key:         'pk_test_5ur9cqWOFuRMaspFcnU8SlXg',
+              amount:      500,
+              name:        'Digital Democracy',
+              description: 'Donate $5.00',
+              image:       'img/dd-logo128x128.png', 
+              panelLabel:  'Donate',
+              token:       token
+            });
+        
+            return false;
+        });
+    </script>
+  </div>
+</div>
+
+</body>
+</html>
+
