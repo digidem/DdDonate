@@ -1,10 +1,41 @@
 <div id="content_wrapper">
-  <div id="clouds_bg"><img src="img/clouds_bg.png"></div>
-  <div id="clouds_blue"><img src="img/clouds_blue.png"></div>
-  <div id="clouds_dark_blue"><img src="img/clouds_dark_blue.png"></div>
-  <div id="clouds_white"><img src="img/clouds_white.png"></div>
+
   <div id="content">
     <h1>Digital Democracy</h1>
-    <p>Payments processor</p>
+    <p>Make a donation</p>
+    
+    <button id="donate-button">Donate $5</button>
+    <div id="response"></div>
+    
+    <script>
+        $("#donate-button").click(function() {
+            $(this).attr("disabled", "disabled");
+            var $response = $("#response").text("Getting card token from Stripe...");
+            
+            var token = function(res){
+                $response.text("Charging card...");
+                $.ajax({
+                    url: '/donate',
+                    crossDomain: true,
+                    data: {stripeToken: res.id},
+                    dataType: 'jsonp'
+                }).done(function (data) {
+                    $response.text("Thank you " + data.card.name + " we just charged $" + (data.amount / 100) + " to your card");
+                });
+            };
+              
+            StripeCheckout.open({
+              key:         '<%= settings.publishable_key %>',
+              amount:      500,
+              name:        'Digital Democracy',
+              description: 'Donate $5.00',
+              image:       'img/dd-logo128x128.png', 
+              panelLabel:  'Donate',
+              token:       token
+            });
+        
+            return false;
+        });
+    </script>
   </div>
 </div>
