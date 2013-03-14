@@ -10,8 +10,8 @@ if production?
 end
 
 #Set Stripe secret and publishable keys from environment variables
-set :publishable_key, ENV['PUBLISHABLE_KEY']
-set :secret_key, ENV['SECRET_KEY']
+set :publishable_key, ENV['STRIPE_PUBLISHABLE_KEY']
+set :secret_key, ENV['STRIPE_SECRET_KEY']
 Stripe.api_key = settings.secret_key
 
 #Don't know why ip_spoofing is turned off, 
