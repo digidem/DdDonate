@@ -1,5 +1,5 @@
 require 'sinatra'
-require 'sinatra/json'
+require 'json'
 require 'stripe'
 require 'rack/contrib/jsonp'
 require 'rack/ssl-enforcer'
