@@ -17,10 +17,16 @@
                 $.ajax({
                     url: '/donate',
                     crossDomain: true,
-                    data: {stripeToken: res.id},
+                    data: {
+                      stripeToken: res.id, 
+                      email: "gmaclennan+test@digital-democracy.org", 
+                      description: "$" + 5 + " Stripe Donation", 
+                      amount: 500
+                    },
                     dataType: 'jsonp'
                 }).done(function (data) {
-                    $response.text("Thank you " + data.card.name + " we just charged $" + (data.amount / 100) + " to your card");
+                  console.log(data);
+                  $response.text("Thank you " + data.name + " we just charged $" + (data.amount / 100) + " to your card and sent an email to " + data.email );
                 });
             };
               
