@@ -1,5 +1,5 @@
 require 'sinatra'
-require 'sinatra/json'
+require 'json'
 require 'stripe'
 require 'rack/contrib/jsonp'
 require 'rack/ssl-enforcer'
@@ -10,8 +10,8 @@ if production?
 end
 
 #Set Stripe secret and publishable keys from environment variables
-set :publishable_key, ENV['PUBLISHABLE_KEY']
-set :secret_key, ENV['SECRET_KEY']
+set :publishable_key, ENV['STRIPE_PUBLISHABLE_KEY']
+set :secret_key, ENV['STRIPE_SECRET_KEY']
 Stripe.api_key = settings.secret_key
 
 #Don't know why ip_spoofing is turned off, 
@@ -26,17 +26,20 @@ get '/' do
 end
 
 get '/donate' do
+  content_type 'application/json'
+
   customer = Stripe::Customer.create(
     :email => params[:email],
     :card  => params[:stripeToken]
   )
   charge = Stripe::Charge.create(
     :amount      => params[:amount],
-    :description => 'Website donation',
+    :description => params[:description],
     :currency    => 'usd',
     :customer    => customer.id
   )
-  json charge, :encoder => :to_json
+  { name: charge["card"]["name"], email: customer["email"], amount: charge["amount"] }.to_json
+  
 end
 
 error Stripe::CardError do
