@@ -1,127 +1,89 @@
-<div id="content_wrapper">
+<div class="container">
 
   <div id="content">
-    <h1>Digital Democracy</h1>
-    <p>Make a donation</p>
-    <form novalidate autocomplete="on" id="donate-form">
+    <h1>Donate</h1>
+
+    <ol class="progress">
+      <li class="active"><a href="#amount" data-toggle="tab">Amount</a></li>
+      <li><a href="#name" data-toggle="tab">Name</a></li>
+      <li><a href="#payment" data-toggle="tab">Payment</a></li>
+    </ol>
+    <form novalidate autocomplete="on" id="donate-form" class="tab-content">
     
-        <div class="payment"><article>
-          <div class="message"></div>
+      <input type="hidden" name="description" value="Website Donation">
 
-          <div class="number">
-            <label for="paymentNumber">Card number</label>
-            <input type="text" id="paymentNumber" placeholder="•••• •••• •••• ••••" data-placeholder="Card number" autocompletetype="cc-number" required="" data-numeric="">
-            <div class="placeholder"></div>
-            <div class="type"></div>
-          </div>
-
-          <div class="expiry">
-            <label for="paymentExpiry">Expires</label>
-            <input type="text" id="paymentExpiry" placeholder="MM / YY" autocompletetype="cc-exp" maxlength="9" pattern="\d*" data-numeric="" required="">
-          </div>
-
-          <div class="name">
-            <label for="paymentName">Name on card</label>
-            <input type="text" id="paymentName" data-placeholder="Name on card" autocompletetype="name" autocapitalize="words" autocorrect="off" spellcheck="off" required="">
-          </div>
-
-          <div class="cvc">
-            <label for="paymentCVC">Card code</label>
-            <input type="text" id="paymentCVC" placeholder="CVC" autocompletetype="cc-csc" maxlength="4" pattern="\d*" autocomplete="off" data-numeric="" required="">
-          </div>
-        </article>
-
-        <div class="preloaded-images"></div>
-    </div>    
+    <fieldset id="amount" class="tab-pane fade in active">
+      <legend>Select an amount:</legend>
+      <label class="checkbox inline btn btn-primary btn-large">
+        <input type="radio" name="amount" value="1500" tabindex="10" id="amount-15">
+        $15
+      </label>
+      <label class="checkbox inline btn btn-primary btn-large">
+        <input type="radio" name="amount" value="3500" tabindex="11" id="amount-35">
+        $35
+      </label>
+      <label class="checkbox inline btn btn-primary btn-large">
+        <input type="radio" name="amount" value="5000" tabindex="12" id="amount-50">
+        $50
+      </label>
+      <label class="checkbox inline btn btn-primary btn-large">
+        <input type="radio" name="amount" value="10000" tabindex="13" id="amount-100">
+        $100
+      </label>
+      <label class="checkbox inline btn btn-primary btn-large">
+        <input type="radio" name="amount" value="25000" tabindex="14" id="amount-250"> 
+        $250
+      </label>
+      <label class="checkbox inline btn btn-primary btn-large">
+        <input type="radio" name="amount" value="50000" tabindex="15" id="amount-500">
+        $500
+      </label>
+      <label class="checkbox inline btn btn-primary btn-large">
+        <input type="radio" name="amount" value="100000" tabindex="16" id="amount-1000">
+        $1000
+      </label>
+      <input type="text" placeholder="Other Amount" class="input-donate">
+    </fieldset> 
     
-    <ul id="amounts">
-        <li class="amount-cont first" id="amount-cont-1">
-            <input type="radio" class="radio" name="amount" value="15" tabindex="10" id="amount-15" checked="checked"> <label for="amount-15" class="active">$15</label>
-        </li>
-        <li class="amount-cont" id="amount-cont-2">
-            <input type="radio" class="radio" name="amount" value="35" tabindex="11" id="amount-35"> <label for="amount-35">$35</label>
-        </li>
-        <li class="amount-cont" id="amount-cont-3">
-            <input type="radio" class="radio" name="amount" value="50" tabindex="12" id="amount-50"> <label for="amount-50">$50</label>
-        </li>
-        <li class="amount-cont" id="amount-cont-4">
-            <input type="radio" class="radio" name="amount" value="100" tabindex="13" id="amount-100"> <label for="amount-100">$100</label>
-        </li>
-        <li class="amount-cont" id="amount-cont-5">
-            <input type="radio" class="radio" name="amount" value="250" tabindex="14" id="amount-250"> <label for="amount-250">$250</label>
-        </li>
-        <li class="amount-cont" id="amount-cont-6">
-            <input type="radio" class="radio" name="amount" value="500" tabindex="15" id="amount-500"> <label for="amount-500">$500</label>
-        </li>
-        <li class="amount-cont" id="amount-cont-7">
-            <input type="radio" class="radio" name="amount" value="1000" tabindex="16" id="amount-1000"> <label for="amount-1000">$1,000</label>
-        </li>
-    </ul>
-    <h2 class="validation"></h2>
-    <button id="donate-button">Donate</button>
+    <fieldset id="name" class="tab-pane fade">
+      <label for="paymentName">Your name</label>
+      <input type="text" name="name" id="paymentName" placeholder="Enter your name" autocompletetype="name" autocapitalize="words" autocorrect="off" spellcheck="off" required="">
+      <label for="email">Your email</label>
+      <input type="text" name="email" placeholder="Enter your email" autocorrect="off" spellcheck="off" required="">
+      <button type="button" id="name-next-button" class="btn btn-primary btn-large">Next =></button>
+    </fieldset>
+    
+    <fieldset id="payment" class="tab-pane fade">
+      <div class="message"></div>
+
+      <div class="number">
+        <label for="paymentNumber">Card number</label>
+        <input type="text" id="paymentNumber" placeholder="• • • •   • • • •   • • • •   • • • •" data-placeholder="Card number" autocompletetype="cc-number" required="" data-numeric="">
+        <div class="placeholder"></div>
+        <div class="type"></div>
+      </div>
+
+      <div class="expiry">
+        <label for="paymentExpiry">Expires</label>
+        <input type="text" id="paymentExpiry" placeholder="MM / YY" autocompletetype="cc-exp" maxlength="9" pattern="\d*" data-numeric="" required="">
+      </div>
+
+
+
+      <div class="cvc">
+        <label for="paymentCVC">Card code</label>
+        <input type="text" id="paymentCVC" placeholder="CVC" autocompletetype="cc-csc" maxlength="4" pattern="\d*" autocomplete="off" data-numeric="" required="">
+      </div>
+      <h2 class="validation"></h2>
+      <button type="submit" id="donate-button" class="btn btn-primary btn-large">Donate</button>
+      
+    </fieldset>    
+    
     </form>
     <div id="response"></div>
     
     <script>
-    jQuery(function($){
-      $('[data-numeric]').payment('restrictNumeric');
-      $('#paymentNumber').payment('formatCardNumber');
-      $('#paymentExpiry').payment('formatCardExpiry');
-      $('#paymentCVC').payment('formatCardCVC');
-    });
-    
-        $("#donate-button").click(function(e) {
-            e.preventDefault();
-            $('input').removeClass('invalid');
-            $('.validation').removeClass('passed failed');
 
-            var cardType = $.payment.cardType($('#paymentNumber').val());
-
-            $('#paymentNumber').toggleClass('invalid', !$.payment.validateCardNumber($('#paymentNumber').val()));
-            $('#paymentExpiry').toggleClass('invalid', !$.payment.validateCardExpiry($('#paymentExpiry').payment('cardExpiryVal')));
-            $('#paymentCVC').toggleClass('invalid', !$.payment.validateCardCVC($('#paymentCVC').val(), cardType));
-
-            if ( $('input.invalid').length ) {
-              $('.validation').addClass('failed');
-            } else {
-              $('.validation').addClass('passed');
-            }
-            
-            $(this).attr("disabled", "disabled");
-            var amount = $('input:radio[name=amount]:checked').val()*100;
-            var $response = $("#response").text("Getting card token from Stripe...");
-            
-            var stripeResponseHandler = function(status, res){
-                console.log(res);
-                $response.text("Charging card...");
-                $.ajax({
-                    url: '/donate',
-                    crossDomain: true,
-                    data: {
-                      stripeToken: res.id, 
-                      email: "gmaclennan+test@digital-democracy.org", 
-                      description: "$" + 5 + " Stripe Donation", 
-                      amount: 500
-                    },
-                    dataType: 'jsonp'
-                }).done(function (data) {
-                  console.log(data);
-                  $response.text("Thank you " + data.name + " we just charged $" + (data.amount / 100) + " to your card and sent an email to " + data.email );
-                });
-            };
-            
-            Stripe.setPublishableKey('<%= settings.publishable_key %>');
-            
-            Stripe.createToken({
-                name: $('#paymentName').val(),
-                number: $('#paymentNumber').val(),
-                cvc: $('#paymentCVC').val(),
-                exp_month: $("#paymentExpiry").payment('cardExpiryVal').month,
-                exp_year: $("#paymentExpiry").payment('cardExpiryVal').year
-            }, stripeResponseHandler);
-        
-            return false;
-        });
     </script>
   </div>
 </div>

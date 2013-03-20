@@ -1,0 +1,103 @@
+#amount .btn {
+width: 50px;
+}
+
+.checkbox.inline {
+padding-top: 11px;
+margin-right: 10px;
+margin-top: 10px;
+}
+
+.checkbox.inline + .checkbox.inline {
+margin-left:0;
+}
+
+#donate-form {
+width: 320px;
+}
+
+input[type="radio"] {
+z-index: -1;
+position: fixed;
+}
+
+
+input[type="text"] {
+width: 275px;
+padding: 11px 19px;
+font-size: 17.5px;
+line-height: 22px;
+}
+
+#amount input[type="text"] {
+width: 155px;
+margin: 10px 10px 0 0;
+}
+
+legend {
+border: 0;
+margin: 0;
+}
+
+.nav-tabs {
+padding: 0;
+width: 320px;}
+
+.expiry, .cvc {
+width: 160px;
+float: left;
+}
+
+.expiry input[type="text"], .cvc input[type="text"] {
+width: 100px;
+}
+
+ol.progress {
+counter-reset: li; /* Initiate a counter */
+list-style: none; /* Remove default numbering */
+*list-style: decimal; /* Keep using default numbering for IE6/7 */
+padding: 0;
+}
+
+ol.progress li {
+display: inline-block;
+position: relative;
+width: 97px;
+text-align: center;
+}
+
+ol.progress li a {
+font-weight: bold;
+text-decoration: none;
+display: block;
+padding-bottom: 1.8em;
+}
+
+ol.progress li.active a {
+color: #333;}
+
+ol.progress li:before {
+content: counter(li);
+counter-increment: li;
+font-weight: bold;
+color: white;
+background-color: #666;
+border: .15em solid #666;
+border-radius: 1.5em;
+display: inline-block;
+line-height: 1.2em;
+vertical-align: middle;
+width: 1.2em;
+height: 1.2em;
+text-align: center;
+position: absolute;
+top: 1.8em;
+left: 50%;
+margin-left: -0.6em;
+z-index: -1;
+}
+
+ol.progress li.active:before {
+background-color: #f89406;
+border-color: #f89406;
+}
