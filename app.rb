@@ -27,15 +27,31 @@ end
 
 get '/donate' do
   content_type 'application/json'
-
-  charge = Stripe::Charge.create(
-    :amount      => params[:amount],
-    :description => params[:email],
-    :currency    => 'usd',
-    :card        => params[:stripeToken]
-  )
   
-  { name: charge["card"]["name"], email: charge["description"], amount: charge["amount"] }.to_json
+  if params[:recurring] == "true"
+    
+    customer = Stripe::Customer.create(
+      :email => params[:email],
+      :card  => params[:stripeToken],
+      :plan => params[:frequency]
+    )
+    
+  else
+
+    charge = Stripe::Charge.create(
+      :amount      => params[:amount],
+      :description => params[:email],
+      :currency    => 'usd',
+      :card        => params[:stripeToken]
+    )
+
+  end
+
+  { 
+    name: charge["card"]["name"], 
+    email: charge["description"], 
+    amount: charge["amount"] 
+  }.to_json
   
 end
 
