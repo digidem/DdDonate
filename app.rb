@@ -28,17 +28,14 @@ end
 get '/donate' do
   content_type 'application/json'
 
-  customer = Stripe::Customer.create(
-    :email => params[:email],
-    :card  => params[:stripeToken]
-  )
   charge = Stripe::Charge.create(
     :amount      => params[:amount],
-    :description => params[:description],
+    :description => params[:email],
     :currency    => 'usd',
-    :customer    => customer.id
+    :card        => params[:stripeToken]
   )
-  { name: charge["card"]["name"], email: customer["email"], amount: charge["amount"] }.to_json
+  
+  { name: charge["card"]["name"], email: charge["description"], amount: charge["amount"] }.to_json
   
 end
 
