@@ -3,6 +3,6 @@ source 'https://rubygems.org'
 gem "sinatra"
 gem "sinatra-contrib"
 gem "stripe"
-gem "thin"
+gem 'unicorn'
 gem "rack-contrib"
 gem "rack-ssl-enforcer"
